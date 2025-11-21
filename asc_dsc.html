@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul class="mainelement">
+      <li class="subelement">
+        <button id="removeelement" onclick="delElement(event)">-</button>
+        <input type="text" id="elementval" />
+        <button id="addelement" onclick="addNewElement(event)">+</button>
+      </li>
+    </ul>
+
+    <button id="printValues">Ascending</button>
+    <button id="descending">Descending</button>
+    <p class="paraContent"></p>
+  </body>
+</html>
+
+<script>
+  var removeEelemt = document.querySelector("#removeelement");
+  var addElement = document.querySelector("#addelement");
+  var elementValue = document.querySelectorAll("#elementval");
+
+  var mainElement = document.querySelector(".mainelement");
+
+  var firstRemove = document.querySelector(
+    ".mainelement li:first-child #removeelement"
+  );
+
+  var printValues = document.querySelector("#printValues");
+
+  firstRemove.disabled = true;
+
+  function addNewElement(event) {
+    const subElement = document.createElement("li");
+    subElement.setAttribute("class", "subelement");
+
+    subElement.innerHTML = `<button id="removeelement" onclick="delElement(event)">-</button><input type="text" id="elementval" /><button id="addelement" onclick="addNewElement(event)">+</button>`;
+
+    mainElement.append(subElement);
+
+    event.target.disabled = true;
+  }
+
+  function enableAdd() {
+    var allParent = document.querySelectorAll(".mainelement .subelement");
+
+    if (allParent.length > 0) {
+      const lastParent = allParent[allParent.length - 1];
+
+      const lastAddBtn = lastParent.querySelector("#addelement");
+
+      lastAddBtn.disabled = false;
+    }
+  }
+
+  function delElement(event) {
+    event.target.parentElement.remove();
+    enableAdd();
+  }
+
+  var valueArr = [];
+
+  printValues.addEventListener("click", function () {
+    var paraContent = document.querySelector(".paraContent");
+
+    var allInputValues = document.querySelectorAll("#elementval");
+
+    valueArr = [];
+
+    allInputValues.forEach(function (item) {
+      valueArr.push(Number(item.value));
+    });
+
+    for (let i = 0; i < valueArr.length; i++) {
+      for (let j = i + 1; j < valueArr.length; j++) {
+        if (valueArr[i] > valueArr[j]) {
+          // swap
+          let temp = valueArr[i];
+          valueArr[i] = valueArr[j];
+          valueArr[j] = temp;
+        }
+      }
+    }
+
+    paraContent.textContent = valueArr;
+  });
+
+  var descendingBtn = document.querySelector("#descending");
+
+  descendingBtn.addEventListener("click", function () {
+    var paraContent = document.querySelector(".paraContent");
+    var allInputValues = document.querySelectorAll("#elementval");
+
+    valueArr = [];
+
+    allInputValues.forEach(function (item) {
+      valueArr.push(Number(item.value));
+    });
+
+    for (let i = 0; i < valueArr.length; i++) {
+      for (let j = i + 1; j < valueArr.length; j++) {
+        if (valueArr[i] < valueArr[j]) {
+          // swap
+          let temp = valueArr[i];
+          valueArr[i] = valueArr[j];
+          valueArr[j] = temp;
+        }
+      }
+    }
+
+    paraContent.textContent = valueArr;
+  });
+</script>
